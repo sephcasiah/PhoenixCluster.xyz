@@ -375,6 +375,28 @@ footer { border-top: 1px solid var(--line); background: var(--bg); padding: 1.5r
 .footer-links a { font-size: 9px; letter-spacing: 0.2em; color: var(--text2); text-decoration: none; text-transform: uppercase; transition: color 0.15s; }
 .footer-links a:hover { color: var(--orange); }
 
+/* ── Hamburger toggle (hidden on desktop) ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 1rem;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+}
+.nav-hamburger span {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: var(--orange);
+  transition: all 0.2s;
+}
+
+/* ── Tablet (≤ 900px) ── */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
@@ -384,6 +406,82 @@ footer { border-top: 1px solid var(--line); background: var(--bg); padding: 1.5r
   nav .nav-status { display: none; }
   .section-wrap { padding: 2.5rem 1.5rem; }
   footer { padding: 1.5rem; }
+  footer .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+}
+
+/* ── Mobile (≤ 600px) ── */
+@media (max-width: 600px) {
+  /* Nav */
+  nav {
+    flex-wrap: wrap;
+    height: auto;
+    position: relative; /* allow dropdown to flow */
+  }
+  .nav-corp { border-right: none; padding: 0 1rem; height: 42px; }
+  .nav-tabs {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+    background: rgba(5,6,10,0.98);
+  }
+  .nav-tabs.open { display: flex; }
+  .nav-tab {
+    padding: 0.75rem 1.25rem;
+    border-right: none;
+    border-bottom: 1px solid var(--line2);
+    font-size: 11px;
+  }
+  .nav-hamburger { display: flex; }
+
+  /* Offset content for sticky nav (fixed height collapses when menu opens,
+     so we keep a static top offset matching the closed bar height) */
+  .hero { padding-top: 42px; }
+
+  /* Hero */
+  .hero-left {
+    padding: 2rem 1.25rem 2.5rem;
+  }
+  .hero-bootlog { margin-bottom: 2rem; font-size: 9px; }
+  .hero-title { font-size: clamp(48px, 14vw, 72px); }
+  .hero-sub { font-size: 14px; max-width: 100%; margin-top: 1rem; margin-bottom: 1.5rem; }
+  .hero-actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+
+  /* Sections */
+  .section-wrap { padding: 2rem 1.25rem; }
+  .section-head { gap: 1rem; margin-bottom: 1.75rem; }
+  .section-title { font-size: 22px; }
+
+  /* About */
+  .about-col { padding: 1.5rem 1.25rem; }
+  .about-col p { font-size: 15px; }
+  .fact-key { width: 80px; font-size: 8px; }
+
+  /* Progress */
+  .progress-track { grid-template-columns: 1fr; }
+  .phase { padding: 1.25rem; }
+
+  /* Launcher */
+  .launcher-info { padding: 1.5rem 1.25rem; }
+  .launcher-info p { font-size: 14px; }
+  .access-block { font-size: 9px; }
+
+  /* Toys */
+  .toys-grid { grid-template-columns: 1fr; }
+  .toy { padding: 1.5rem 1.25rem; }
+
+  /* Community */
+  .community-card { padding: 1.5rem 1.25rem; gap: 1rem; }
+  .cc-desc { font-size: 13px; }
+
+  /* Footer */
+  footer { padding: 1.25rem; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+  .footer-links { flex-wrap: wrap; gap: 1rem; }
 }
 </style>
 </head>
@@ -399,7 +497,10 @@ footer { border-top: 1px solid var(--line); background: var(--bg); padding: 1.5r
       <div class="nav-corp-sub">DUST 514 Revival</div>
     </div>
   </div>
-  <div class="nav-tabs">
+  <button class="nav-hamburger" id="navToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-tabs" id="navTabs">
     <a class="nav-tab active" href="#about">// About</a>
     <a class="nav-tab" href="#progress">// Progress</a>
     <a class="nav-tab" href="#launcher">// Launcher</a>
@@ -631,5 +732,13 @@ footer { border-top: 1px solid var(--line); background: var(--bg); padding: 1.5r
   </div>
 </footer>
 
+<script>
+  const toggle = document.getElementById('navToggle');
+  const tabs   = document.getElementById('navTabs');
+  toggle.addEventListener('click', () => tabs.classList.toggle('open'));
+  tabs.querySelectorAll('.nav-tab').forEach(link => {
+    link.addEventListener('click', () => tabs.classList.remove('open'));
+  });
+</script>
 </body>
 </html>
