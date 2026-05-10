@@ -1,11 +1,634 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>My Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Phoenix — DUST 514</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #05060A;
+  --bg2:       #080A10;
+  --bg3:       #0C0E16;
+  --panel:     #0A0C13;
+  --orange:    #C96A00;
+  --orange2:   #E07800;
+  --orange-dim:#5A3000;
+  --red:       #8B1A00;
+  --teal:      #1A4A5A;
+  --teal2:     #0D2A36;
+  --line:      rgba(201,106,0,0.18);
+  --line2:     rgba(201,106,0,0.08);
+  --text:      #B8C4CC;
+  --text2:     #6A7A84;
+  --text3:     #2E3A42;
+  --white:     #D8E4EA;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 500;
+  height: 42px;
+  background: rgba(5,6,10,0.96);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: stretch;
+}
+
+.nav-corp {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  border-right: 1px solid var(--line);
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.nav-corp-icon {
+  width: 18px; height: 18px;
+  border: 1px solid var(--orange);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-corp-icon svg { width: 10px; height: 10px; fill: var(--orange); }
+
+.nav-corp-name {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+.nav-corp-sub {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text2);
+  text-transform: uppercase;
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  border-right: 1px solid var(--line2);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text2);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  position: relative;
+}
+.nav-tab:hover { color: var(--orange); background: rgba(201,106,0,0.04); }
+.nav-tab.active { color: var(--orange); background: rgba(201,106,0,0.06); }
+
+.nav-status {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: 1.5rem;
+  margin-left: auto;
+  border-left: 1px solid var(--line);
+}
+.nav-status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text2);
+  text-transform: uppercase;
+}
+.status-dot { width: 5px; height: 5px; border-radius: 50%; }
+.status-dot.on { background: #3A9A60; box-shadow: 0 0 4px #3A9A60; }
+.status-dot.warn { background: var(--orange); box-shadow: 0 0 4px var(--orange); }
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 42px;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  /* REPLACE: swap this path for your hosted banner image */
+  background-image: url('banimg2k.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.07;
+  filter: saturate(0.3);
+}
+
+.hero-left {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 3rem 2rem 3rem 3rem;
+  border-right: 1px solid var(--line);
+}
+
+.hero-left::before {
+  content: '';
+  position: absolute;
+  top: 60px; left: 24px;
+  width: 30px; height: 30px;
+  border-top: 1px solid var(--orange);
+  border-left: 1px solid var(--orange);
+}
+.hero-left::after {
+  content: '';
+  position: absolute;
+  bottom: 24px; right: 24px;
+  width: 30px; height: 30px;
+  border-bottom: 1px solid var(--orange);
+  border-right: 1px solid var(--orange);
+}
+
+.hero-bootlog {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  margin-bottom: 3rem;
+  line-height: 2;
+}
+.bootlog-line { display: flex; gap: 1rem; }
+.bootlog-ok { color: #2A6A40; }
+.bootlog-warn { color: var(--orange-dim); }
+
+.hero-ident { margin-bottom: 2rem; }
+
+.hero-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hero-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--line); }
+
+.hero-proj {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(60px, 8vw, 96px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.9;
+  margin-bottom: 0.3rem;
+}
+
+.hero-dust {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--text2);
+  text-transform: uppercase;
+}
+.hero-dust span { color: var(--red); }
+
+.hero-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.6;
+  max-width: 480px;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.hero-actions { display: flex; gap: 1px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+.btn-primary { background: var(--orange); color: #000; }
+.btn-primary:hover { background: var(--orange2); }
+.btn-ghost { background: rgba(201,106,0,0.06); color: var(--text2); border: 1px solid var(--line); }
+.btn-ghost:hover { color: var(--orange); border-color: var(--orange); background: rgba(201,106,0,0.1); }
+.btn-icon { width: 14px; height: 14px; fill: currentColor; }
+
+.hero-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  gap: 1px;
+  background: rgba(8,10,16,0.6);
+}
+
+.data-block {
+  padding: 1.25rem 1rem;
+  border: 1px solid var(--line2);
+  border-left: 2px solid var(--line);
+  margin-bottom: 1px;
+}
+.data-block:hover { border-left-color: var(--orange); }
+.data-label { font-size: 9px; letter-spacing: 0.25em; color: var(--text2); text-transform: uppercase; margin-bottom: 0.4rem; }
+.data-value { font-size: 20px; letter-spacing: 0.05em; color: var(--orange); font-family: 'Share Tech Mono', monospace; }
+.data-sub { font-size: 9px; letter-spacing: 0.15em; color: var(--text3); text-transform: uppercase; margin-top: 0.15rem; }
+.data-bar-wrap { margin-top: 0.5rem; height: 2px; background: var(--line2); position: relative; }
+.data-bar-fill { position: absolute; top: 0; left: 0; bottom: 0; background: var(--orange); }
+
+.hero-right-footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line2);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+  line-height: 2;
+}
+
+.section-wrap { border-top: 1px solid var(--line); padding: 3.5rem 3rem; }
+.section-wrap.alt { background: var(--bg2); }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+
+.section-head { display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 2.5rem; }
+.section-index { font-size: 9px; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; padding-top: 4px; flex-shrink: 0; width: 40px; border-top: 1px solid var(--line2); }
+.section-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); line-height: 1; }
+.section-title span { display: block; font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--orange); font-weight: 400; margin-bottom: 0.4rem; }
+
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line2); }
+.about-col { background: var(--bg); padding: 2rem; }
+.about-col p { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; color: var(--text2); line-height: 1.7; margin-bottom: 1rem; letter-spacing: 0.02em; }
+.about-col p strong { color: var(--text); font-weight: 500; }
+
+.about-facts { display: flex; flex-direction: column; gap: 1px; }
+.fact-row { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-left: 2px solid var(--line2); transition: border-color 0.15s; }
+.fact-row:hover { border-left-color: var(--orange); }
+.fact-key { font-size: 9px; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; flex-shrink: 0; width: 100px; padding-top: 2px; }
+.fact-val { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; color: var(--text); letter-spacing: 0.03em; }
+.fact-val small { display: block; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+.progress-track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line2); }
+.phase { background: var(--bg); padding: 1.5rem; position: relative; }
+.phase.done { background: var(--bg2); }
+.phase.active { background: var(--bg3); }
+.phase-num { font-size: 9px; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; margin-bottom: 1rem; }
+.phase-status { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 6px; }
+.phase-status.done { color: var(--orange); }
+.phase-status.active { color: #3A9A60; }
+.phase-status.planned { color: var(--text3); }
+.phase h3 { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); margin-bottom: 0.5rem; }
+.phase.planned h3 { color: var(--text2); }
+.phase p { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--text2); line-height: 1.5; }
+.phase.planned p { color: var(--text3); }
+.phase-bar { position: absolute; top: 0; left: 0; right: 0; height: 1px; }
+.phase-bar.done { background: var(--orange); }
+.phase-bar.active { background: #3A9A60; }
+
+.launcher-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line2); }
+.launcher-screen { background: var(--bg); position: relative; overflow: hidden; }
+.launcher-screen-bar { background: var(--panel); border-bottom: 1px solid var(--line); padding: 6px 12px; display: flex; align-items: center; gap: 10px; font-size: 9px; letter-spacing: 0.2em; color: var(--text2); text-transform: uppercase; }
+.launcher-screen-bar::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 4px var(--orange); }
+.launcher-screen img { display: block; width: 100%; height: auto; opacity: 0.9; }
+.launcher-info { background: var(--bg); padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.launcher-info p { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; color: var(--text2); line-height: 1.7; }
+.launcher-info p strong { color: var(--text); }
+.access-block { padding: 1rem; border: 1px solid var(--line); border-left: 2px solid var(--orange); font-size: 10px; letter-spacing: 0.1em; color: var(--text2); line-height: 1.8; }
+.access-block .key { color: var(--orange); }
+
+.toys-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line2); }
+.toy { background: var(--bg); padding: 2rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; position: relative; overflow: hidden; }
+.toy::after { content: ''; position: absolute; bottom: -20px; right: -20px; width: 60px; height: 60px; border: 1px solid var(--line2); transform: rotate(45deg); }
+.toy-tag { font-size: 9px; letter-spacing: 0.25em; color: var(--text3); text-transform: uppercase; border: 1px solid var(--text3); padding: 2px 6px; width: fit-content; }
+.toy h3 { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); }
+.toy p { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--text3); line-height: 1.5; }
+.toy-num { font-size: 9px; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; margin-top: auto; }
+
+.community-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line2); }
+.community-card { background: var(--bg); padding: 2rem; display: flex; gap: 1.5rem; align-items: flex-start; text-decoration: none; color: inherit; transition: background 0.15s; position: relative; }
+.community-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: transparent; transition: background 0.15s; }
+.community-card:hover { background: rgba(201,106,0,0.04); }
+.community-card:hover::after { background: var(--orange); }
+.cc-icon { width: 32px; height: 32px; flex-shrink: 0; fill: var(--orange); opacity: 0.7; }
+.community-card:hover .cc-icon { opacity: 1; }
+.cc-name { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); margin-bottom: 0.4rem; }
+.cc-desc { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--text2); line-height: 1.5; margin-bottom: 0.75rem; }
+.cc-link { font-size: 9px; letter-spacing: 0.2em; color: var(--orange); text-transform: uppercase; }
+
+footer { border-top: 1px solid var(--line); background: var(--bg); padding: 1.5rem 3rem; }
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.footer-id { font-size: 10px; letter-spacing: 0.2em; color: var(--orange); text-transform: uppercase; }
+.footer-note { font-size: 9px; letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 9px; letter-spacing: 0.2em; color: var(--text2); text-decoration: none; text-transform: uppercase; transition: color 0.15s; }
+.footer-links a:hover { color: var(--orange); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .about-grid, .launcher-grid, .community-grid { grid-template-columns: 1fr; }
+  .progress-track { grid-template-columns: 1fr 1fr; }
+  .toys-grid { grid-template-columns: 1fr; }
+  nav .nav-status { display: none; }
+  .section-wrap { padding: 2.5rem 1.5rem; }
+  footer { padding: 1.5rem; }
+}
+</style>
 </head>
 <body>
-   <h1>the Official Project Phoenix placeholder page!.</h1>
+
+<nav>
+  <div class="nav-corp">
+    <div class="nav-corp-icon">
+      <svg viewBox="0 0 10 10"><polygon points="5,1 9,3 9,7 5,9 1,7 1,3"/></svg>
+    </div>
+    <div>
+      <div class="nav-corp-name">Project Phoenix</div>
+      <div class="nav-corp-sub">DUST 514 Revival</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <a class="nav-tab active" href="#about">// About</a>
+    <a class="nav-tab" href="#progress">// Progress</a>
+    <a class="nav-tab" href="#launcher">// Launcher</a>
+    <a class="nav-tab" href="#toys">// Toys</a>
+    <a class="nav-tab" href="#community">// Community</a>
+  </div>
+  <div class="nav-status">
+    <div class="nav-status-item"><div class="status-dot on"></div>Cluster Online</div>
+    <div class="nav-status-item"><div class="status-dot warn"></div>Beta</div>
+  </div>
+</nav>
+
+<section class="hero" id="about">
+  <div class="hero-bg"></div>
+
+  <div class="hero-left">
+    <div class="hero-bootlog">
+      <div class="bootlog-line"><span class="bootlog-ok">[  OK  ]</span><span>Initializing clone vats...</span></div>
+      <div class="bootlog-line"><span class="bootlog-ok">[  OK  ]</span><span>Neural link established</span></div>
+      <div class="bootlog-line"><span class="bootlog-ok">[  OK  ]</span><span>Loading battlefield intelligence</span></div>
+      <div class="bootlog-line"><span class="bootlog-warn">[ WARN ]</span><span>Orbital services: limited availability</span></div>
+      <div class="bootlog-line"><span class="bootlog-ok">[  OK  ]</span><span>Warbarge: online</span></div>
+    </div>
+
+    <div class="hero-ident">
+      <div class="hero-label">Revival Initiative</div>
+      <div class="hero-proj">Project</div>
+      <div class="hero-title">PHOENIX</div>
+      <div class="hero-dust">DUST<span>514</span> // Fan Revival</div>
+    </div>
+
+    <p class="hero-sub">
+      DUST 514's servers went dark in 2016. We're bringing it back — original PS3 client, rebuilt backend, no shortcuts. New Eden Forever.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://discord.gg/98EdSWyWmA" class="btn btn-primary" target="_blank" rel="noopener">
+        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.112 18.103.13 18.116a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Join Discord
+      </a>
+      <a href="https://reddit.com/r/projectphoenix" class="btn btn-ghost" target="_blank" rel="noopener">r/projectphoenix</a>
+      <a href="#progress" class="btn btn-ghost">Status &darr;</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="data-block">
+      <div class="data-label">// Project Status</div>
+      <div class="data-value">ACTIVE</div>
+      <div class="data-sub">Development ongoing</div>
+      <div class="data-bar-wrap"><div class="data-bar-fill" style="width:55%"></div></div>
+    </div>
+    <div class="data-block">
+      <div class="data-label">// Original Timeline</div>
+      <div class="data-value">May 13, 2013 - May 30, 2016</div>
+      <div class="data-sub">CCP Games — PS3 exclusive</div>
+    </div>
+    <div class="data-block">
+      <div class="data-label">// Project Timeline</div>
+      <div class="data-value">2024 - Present</div>
+      <div class="data-sub">Windows & Linux, PS3 Optional</div>
+    </div>
+    <div class="data-block">
+      <div class="data-label">// Client Platform</div>
+      <div class="data-value">RPCS3 & PS3</div>
+      <div class="data-sub">Emulated, original hardware supported</div>
+    </div>
+    <div class="data-block">
+      <div class="data-label">// What This Is</div>
+      <div class="data-sub" style="color:var(--text2); font-size:11px; line-height:1.8; margin-top:0.5rem;">
+        Independent fan project. Hell-bent on seeing Dust 514 updated and playable again.
+      </div>
+    </div>
+    <div class="hero-right-footer">
+      <div>SYS // PHX-core v1.3</div>
+      <div>NET // [REDACTED]: reachable</div>
+      <div>AUTH // In Progress</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-wrap alt" id="progress">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-index">02</div>
+      <div>
+        <div class="section-title"><span>// Development</span>Progress Report</div>
+      </div>
+    </div>
+    <div class="progress-track">
+      <div class="phase done">
+        <div class="phase-bar done"></div>
+        <div class="phase-num">Phase 01</div>
+        <div class="phase-status done"><div class="status-dot warn"></div>Complete</div>
+        <h3>Reverse Engineering</h3>
+        <p>Game client behavior mapping. Asset decompilation.</p>
+      </div>
+      <div class="phase done">
+        <div class="phase-bar done"></div>
+        <div class="phase-num">Phase 02</div>
+        <div class="phase-status done"><div class="status-dot warn"></div>Complete</div>
+        <h3>Server Foundation</h3>
+        <p>Auth, accounts, and core API running. Client loads in-game.</p>
+      </div>
+      <div class="phase active">
+        <div class="phase-bar active"></div>
+        <div class="phase-num">Phase 03</div>
+        <div class="phase-status active"><div class="status-dot on"></div>In Progress</div>
+        <h3>Multiplayer</h3>
+        <p>Battle server routing and live match sessions.</p>
+      </div>
+      <div class="phase planned">
+        <div class="phase-num">Phase 04</div>
+        <div class="phase-status planned"><div class="status-dot" style="background:var(--text3)"></div>Long Term</div>
+        <h3>Native PC Port</h3>
+        <p>Full UE4 upgrade and standalone PC build. The end goal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap" id="launcher">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-index">03</div>
+      <div>
+        <div class="section-title"><span>// PHX-L</span>Phoenix Launcher</div>
+      </div>
+    </div>
+    <div class="launcher-grid">
+      <div class="launcher-screen">
+        <div class="launcher-screen-bar">PHX-L // Phoenix Launcher — Early Access</div>
+        <!-- REPLACE: swap this src for your hosted launcher screenshot -->
+        <img src="https://preview.redd.it/milestone-update-v0-eh105pxfefyg1.png?width=1080&crop=smart&auto=webp&s=706114ac6f64d36948d04ee81eb12caeebbf9e76" alt="Phoenix Launcher" />
+      </div>
+      <div class="launcher-info">
+        <p>
+          <strong>Phoenix Launcher</strong> handles everything needed to get DUST 514 running against the Project Phoenix backend — RPCS3 configuration, server routing, and patch management in one place.
+        </p>
+        <p>
+          Currently in early testing. Access is limited while the backend matures. If you want to get your boots on the ground, the Discord is your first stop.
+        </p>
+        <div class="access-block">
+          <div><span class="key">STATUS</span> &nbsp;// Early access, invite only</div>
+          <div><span class="key">ACCESS</span> &nbsp;// Via Discord — ask in #general</div>
+          <div><span class="key">PLATFORM</span> // Windows & Linux — RPCS3 required</div>
+        </div>
+        <div>
+          <a href="https://discord.gg/98EdSWyWmA" class="btn btn-primary" target="_blank" rel="noopener">
+            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.112 18.103.13 18.116a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+            Get Access via Discord
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap alt" id="toys">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-index">04</div>
+      <div>
+        <div class="section-title"><span>// Community Tooling</span>Toys</div>
+      </div>
+    </div>
+    <div class="toys-grid">
+      <div class="toy">
+        <div class="toy-tag">Soon&#x2122;</div>
+        <h3>???</h3>
+        <p>Something's in the works. Watch the Discord.</p>
+        <div class="toy-num">TOY // 01</div>
+      </div>
+      <div class="toy">
+        <div class="toy-tag">Soon&#x2122;</div>
+        <h3>???</h3>
+        <p>Something's in the works. Watch the Discord.</p>
+        <div class="toy-num">TOY // 02</div>
+      </div>
+      <div class="toy">
+        <div class="toy-tag">Soon&#x2122;</div>
+        <h3>???</h3>
+        <p>Something's in the works. Watch the Discord.</p>
+        <div class="toy-num">TOY // 03</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap" id="community">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-index">05</div>
+      <div>
+        <div class="section-title"><span>// Comms</span>Community</div>
+      </div>
+    </div>
+    <div class="community-grid">
+      <a href="https://discord.gg/98EdSWyWmA" class="community-card" target="_blank" rel="noopener">
+        <svg class="cc-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.101 18.08.112 18.103.13 18.116a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        <div class="cc-body">
+          <div class="cc-name">Discord</div>
+          <div class="cc-desc">Dev chat, announcements, testing access, bug reports. Main hub for everything going on with the project.</div>
+          <div class="cc-link">discord.gg/98EdSWyWmA &rarr;</div>
+        </div>
+      </a>
+      <a href="https://reddit.com/r/projectphoenix" class="community-card" target="_blank" rel="noopener">
+        <svg class="cc-icon" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+        <div class="cc-body">
+          <div class="cc-name">r/projectphoenix</div>
+          <div class="cc-desc">News, progress updates, longer-form posts and community discussion. Good place to follow without the Discord noise.</div>
+          <div class="cc-link">reddit.com/r/projectphoenix &rarr;</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-id">PHX // Project Phoenix — DUST 514</div>
+    <div class="footer-note">Fan project — not affiliated with or endorsed by Fenris Creations (formerly CCP Games)</div>
+    <div class="footer-links">
+      <!-- todo: need to add supporting github links at some point -->
+      <a href="#" target="_blank">GitHub</a>
+      <a href="#about">About</a>
+      <a href="#community">Community</a>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
