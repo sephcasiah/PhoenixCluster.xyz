@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Signal Lost // Project Phoenix</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #05060A;
+  --bg2:       #080A10;
+  --bg3:       #0C0E16;
+  --panel:     #0A0C13;
+  --orange:    #C96A00;
+  --orange2:   #E07800;
+  --orange-dim:#5A3000;
+  --red:       #8B1A00;
+  --teal:      #1A4A5A;
+  --teal2:     #0D2A36;
+  --line:      rgba(201,106,0,0.18);
+  --line2:     rgba(201,106,0,0.08);
+  --text:      #B8C4CC;
+  --text2:     #6A7A84;
+  --text3:     #2E3A42;
+  --white:     #D8E4EA;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 500;
+  height: 42px;
+  background: rgba(5,6,10,0.96);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: stretch;
+}
+
+.nav-corp {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  border-right: 1px solid var(--line);
+  gap: 10px;
+  flex-shrink: 0;
+}
+.nav-corp-icon {
+  width: 18px; height: 18px;
+  border: 1px solid var(--orange);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-corp-icon svg { width: 10px; height: 10px; fill: var(--orange); }
+.nav-corp-name { font-size: 11px; letter-spacing: 0.2em; color: var(--orange); text-transform: uppercase; }
+.nav-corp-sub  { font-size: 9px; letter-spacing: 0.15em; color: var(--text2); text-transform: uppercase; }
+
+.nav-status {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: 1.5rem;
+  margin-left: auto;
+  border-left: 1px solid var(--line);
+}
+.nav-status-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 9px; letter-spacing: 0.15em; color: var(--text2); text-transform: uppercase;
+}
+.status-dot { width: 5px; height: 5px; border-radius: 50%; }
+.status-dot.err { background: #8B1A00; box-shadow: 0 0 4px #8B1A00; animation: pulse-red 2s infinite; }
+
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+main {
+  flex: 1;
+  padding-top: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.err-wrap {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  min-height: calc(100vh - 42px);
+  border-bottom: 1px solid var(--line);
+}
+
+.err-left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 3rem 2rem 3rem 3rem;
+  border-right: 1px solid var(--line);
+}
+
+.err-left::before {
+  content: '';
+  position: absolute;
+  top: 60px; left: 24px;
+  width: 30px; height: 30px;
+  border-top: 1px solid var(--red);
+  border-left: 1px solid var(--red);
+}
+.err-left::after {
+  content: '';
+  position: absolute;
+  bottom: 24px; right: 24px;
+  width: 30px; height: 30px;
+  border-bottom: 1px solid var(--red);
+  border-right: 1px solid var(--red);
+}
+
+.err-log {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  margin-bottom: 3rem;
+  line-height: 2;
+}
+.log-line { display: flex; gap: 1rem; }
+.log-ok   { color: #2A6A40; }
+.log-warn { color: var(--orange-dim); }
+.log-err  { color: var(--red); }
+
+.log-line { opacity: 0; animation: fadein 0.3s forwards; }
+.log-line:nth-child(1) { animation-delay: 0.1s; }
+.log-line:nth-child(2) { animation-delay: 0.5s; }
+.log-line:nth-child(3) { animation-delay: 0.9s; }
+.log-line:nth-child(4) { animation-delay: 1.3s; }
+.log-line:nth-child(5) { animation-delay: 1.7s; }
+.log-line:nth-child(6) { animation-delay: 2.1s; }
+@keyframes fadein { to { opacity: 1; } }
+
+.err-ident { margin-bottom: 2rem; }
+
+.err-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.err-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--red); opacity: 0.4; }
+
+.err-code {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.err-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(60px, 8vw, 96px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.9;
+  margin-bottom: 0.3rem;
+}
+
+.err-sub-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--text2);
+  text-transform: uppercase;
+}
+.err-sub-tag span { color: var(--red); }
+
+.err-desc {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.6;
+  max-width: 480px;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.err-actions { display: flex; gap: 1px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+}
+.btn-primary { background: var(--orange); color: #000; }
+.btn-primary:hover { background: var(--orange2); }
+.btn-ghost { background: rgba(201,106,0,0.06); color: var(--text2); border: 1px solid var(--line); }
+.btn-ghost:hover { color: var(--orange); border-color: var(--orange); background: rgba(201,106,0,0.1); }
+
+.err-right {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  gap: 1px;
+  background: rgba(8,10,16,0.6);
+}
+
+.data-block {
+  padding: 1.25rem 1rem;
+  border: 1px solid var(--line2);
+  border-left: 2px solid var(--line);
+  margin-bottom: 1px;
+}
+.data-block.err-block { border-left-color: var(--red); }
+.data-block:hover { border-left-color: var(--orange); }
+.data-label { font-size: 9px; letter-spacing: 0.25em; color: var(--text2); text-transform: uppercase; margin-bottom: 0.4rem; }
+.data-value { font-size: 20px; letter-spacing: 0.05em; color: var(--orange); font-family: 'Share Tech Mono', monospace; }
+.data-value.red { color: var(--red); }
+.data-sub { font-size: 9px; letter-spacing: 0.15em; color: var(--text3); text-transform: uppercase; margin-top: 0.15rem; }
+.data-bar-wrap { margin-top: 0.5rem; height: 2px; background: var(--line2); position: relative; }
+.data-bar-fill { position: absolute; top: 0; left: 0; bottom: 0; background: var(--red); width: 0%; animation: fillbar 2.4s 2.5s forwards; }
+@keyframes fillbar { to { width: 100%; } }
+
+.err-right-footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line2);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+  line-height: 2;
+}
+
+.err-title {
+  position: relative;
+}
+.err-title::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px; top: 0;
+  color: var(--red);
+  clip: rect(0, 900px, 0, 0);
+  animation: glitch 4s infinite 3s;
+  opacity: 0.35;
+}
+@keyframes glitch {
+  0%   { clip: rect(0,900px,0,0); }
+  5%   { clip: rect(20px,900px,40px,0); left: -2px; }
+  10%  { clip: rect(60px,900px,80px,0); left: 2px; }
+  15%  { clip: rect(10px,900px,30px,0); left: -2px; }
+  20%  { clip: rect(0,900px,0,0); }
+  100% { clip: rect(0,900px,0,0); }
+}
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 1rem;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+}
+.nav-hamburger span { display: block; width: 18px; height: 1px; background: var(--orange); }
+
+@media (max-width: 900px) {
+  .err-wrap { grid-template-columns: 1fr; }
+  .err-right { display: none; }
+  nav .nav-status { display: none; }
+}
+
+@media (max-width: 600px) {
+  nav { flex-wrap: wrap; height: auto; position: relative; }
+  .nav-corp { border-right: none; padding: 0 1rem; height: 42px; }
+  .nav-hamburger { display: flex; }
+  .err-left { padding: 2rem 1.25rem 2.5rem; }
+  .err-log { margin-bottom: 2rem; font-size: 9px; }
+  .err-title { font-size: clamp(48px, 14vw, 72px); }
+  .err-desc { font-size: 14px; max-width: 100%; margin-top: 1rem; margin-bottom: 1.5rem; }
+  .err-actions { flex-direction: column; gap: 4px; }
+  .err-actions .btn { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-corp">
+    <div class="nav-corp-icon">
+      <svg viewBox="0 0 10 10"><polygon points="5,1 9,3 9,7 5,9 1,7 1,3"/></svg>
+    </div>
+    <div>
+      <div class="nav-corp-name">Project Phoenix</div>
+      <div class="nav-corp-sub">DUST 514 Revival</div>
+    </div>
+  </div>
+  <div class="nav-status">
+    <div class="nav-status-item"><div class="status-dot err"></div>Signal Lost</div>
+    <div class="nav-status-item" style="color: var(--red);">ERR // 404</div>
+  </div>
+</nav>
+
+<main>
+  <div class="err-wrap">
+
+    <div class="err-left">
+      <div class="err-log">
+        <div class="log-line"><span class="log-ok">[  OK  ]</span><span>Initializing clone vats...</span></div>
+        <div class="log-line"><span class="log-ok">[  OK  ]</span><span>Neural link established</span></div>
+        <div class="log-line"><span class="log-warn">[ WARN ]</span><span>Uplink signal degraded</span></div>
+        <div class="log-line"><span class="log-err">[ FAIL ]</span><span>Orbital relay: no response</span></div>
+        <div class="log-line"><span class="log-err">[ FAIL ]</span><span>Route not found — sector lost</span></div>
+        <div class="log-line"><span class="log-err">[ ERR  ]</span><span>Aborting — signal lost</span></div>
+      </div>
+
+      <div class="err-ident">
+        <div class="err-label">Signal Lost</div>
+        <div class="err-code">Error</div>
+        <div class="err-title" data-text="404">404</div>
+        <div class="err-sub-tag">SECTOR<span>NULL</span> // Not Found</div>
+      </div>
+
+      <p class="err-desc">
+        The route you're looking for doesn't exist or has been purged from the relay network. Orbital uplink returned no signal from this sector.
+      </p>
+
+      <div class="err-actions">
+        <a href="/" class="btn btn-primary">Return to Warbarge</a>
+        <a href="/#community" class="btn btn-ghost">Discord</a>
+        <a href="/#progress" class="btn btn-ghost">Status &darr;</a>
+      </div>
+    </div>
+
+    <div class="err-right">
+      <div class="data-block err-block">
+        <div class="data-label">// Response Code</div>
+        <div class="data-value red">404</div>
+        <div class="data-sub">Route not found</div>
+      </div>
+      <div class="data-block">
+        <div class="data-label">// Cluster Status</div>
+        <div class="data-value">ONLINE</div>
+        <div class="data-sub">Phoenix-core reachable</div>
+      </div>
+      <div class="data-block">
+        <div class="data-label">// Relay Signal</div>
+        <div class="data-value red">LOST</div>
+        <div class="data-sub">No uplink from requested sector</div>
+        <div class="data-bar-wrap"><div class="data-bar-fill"></div></div>
+      </div>
+      <div class="data-block">
+        <div class="data-label">// Action Required</div>
+        <div class="data-sub" style="color:var(--text2); font-size:11px; line-height:1.8; margin-top:0.5rem;">
+          Verify the URL and try again, or return to the warbarge. If you believe this is an error, report it in Discord.
+        </div>
+      </div>
+      <div class="err-right-footer">
+        <div>SYS // PHX-core v1.3</div>
+        <div>NET // Uplink: {Error}</div>
+        <div>ROUTE // [NULL]: not mapped</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>
