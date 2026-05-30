@@ -1,10 +1,10 @@
 {
-  "date": "2026-05-27",
-  "generated_at_cst": "2026-05-27T23:00:00 CST",
-  "total_beats": 1,
-  "expected_beats": 30,
+  "date": "2026-05-29",
+  "generated_at_cst": "2026-05-29T23:00:00 CST",
+  "total_beats": 3,
+  "expected_beats": 3,
   "uptime_pct": 100.0,
-  "total_uptime_minutes": 154.3,
+  "total_uptime_minutes": 19.2,
   "total_downtime_minutes": 0,
   "longest_outage_minutes": 0.0,
   "downtime_windows": [],
@@ -12,7 +12,15 @@
   "peak_player_count": 0,
   "player_count_history": [
     {
-      "time": "2026-05-27T20:25:42 CST",
+      "time": "2026-05-29T22:40:46 CST",
+      "count": 0
+    },
+    {
+      "time": "2026-05-29T22:46:13 CST",
+      "count": 0
+    },
+    {
+      "time": "2026-05-29T22:51:40 CST",
       "count": 0
     }
   ]
