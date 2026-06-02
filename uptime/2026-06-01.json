@@ -1,0 +1,19 @@
+{
+  "date": "2026-06-01",
+  "generated_at_cst": "2026-06-01T23:00:00 CST",
+  "total_beats": 1,
+  "expected_beats": 232,
+  "uptime_pct": 100.0,
+  "total_uptime_minutes": 1164.0,
+  "total_downtime_minutes": 0,
+  "longest_outage_minutes": 0.0,
+  "downtime_windows": [],
+  "avg_player_count": 0.0,
+  "peak_player_count": 0,
+  "player_count_history": [
+    {
+      "time": "2026-06-01T03:35:57 CST",
+      "count": 0
+    }
+  ]
+}
