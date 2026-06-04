@@ -1,0 +1,29 @@
+{
+  "date": "2026-06-03",
+  "generated_at_cst": "2026-06-03T23:00:00 CST",
+  "total_beats": 2,
+  "expected_beats": 238,
+  "uptime_pct": 13.91,
+  "total_uptime_minutes": 165.9,
+  "total_downtime_minutes": 1026.5,
+  "longest_outage_minutes": 1026.5,
+  "downtime_windows": [
+    {
+      "start": "2026-06-03T03:07:35 CST",
+      "end": "2026-06-03T20:14:06 CST",
+      "duration_minutes": 1026.5
+    }
+  ],
+  "avg_player_count": 0.0,
+  "peak_player_count": 0,
+  "player_count_history": [
+    {
+      "time": "2026-06-03T03:07:35 CST",
+      "count": 0
+    },
+    {
+      "time": "2026-06-03T20:14:06 CST",
+      "count": 0
+    }
+  ]
+}
